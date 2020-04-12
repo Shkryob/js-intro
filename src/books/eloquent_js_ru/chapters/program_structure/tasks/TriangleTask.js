@@ -7,8 +7,8 @@ export default class TriangleTask extends BaseTask {
         super('Треугольник в цикле', 'triangle', description);
     }
 
-    validate(output) {
-        chai.expect(this.normalizeText(output)).equal(this.normalizeText(`#
+    validate(sandbox) {
+        chai.expect(this.normalizeText(sandbox.getOutput())).equal(this.normalizeText(`#
 ##
 ###
 ####

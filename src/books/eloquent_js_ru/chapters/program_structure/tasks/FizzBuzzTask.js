@@ -8,7 +8,8 @@ export default class FizzBuzzTask extends BaseTask {
         super('FizzBuzz', 'fizz-buzz', description);
     }
 
-    validate(output) {
-        chai.expect(this.normalizeText(output)).equal(this.normalizeText(expectedOutput));
+    validate(sandbox) {
+        chai.expect(this.normalizeText(sandbox.getOutput()))
+            .equal(this.normalizeText(expectedOutput));
     }
 }

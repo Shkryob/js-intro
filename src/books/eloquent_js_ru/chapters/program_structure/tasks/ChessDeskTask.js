@@ -7,8 +7,9 @@ export default class ChessDeskTask extends BaseTask {
         super('Шахматная доска', 'chess-desk', description);
     }
 
-    validate(output) {
-        chai.expect(this.normalizeText(output)).equal(this.normalizeText(` # # # #
+    validate(sandbox) {
+        chai.expect(this.normalizeText(sandbox.getOutput()))
+            .equal(this.normalizeText(` # # # #
 # # # # 
  # # # #
 # # # # 

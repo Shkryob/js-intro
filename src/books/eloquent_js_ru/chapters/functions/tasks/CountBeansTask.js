@@ -7,8 +7,8 @@ export default class CountBeansTask extends BaseTask {
         super('Считаем бобы', 'count-beans', description);
     }
 
-    validate(output) {
-        chai.expect(this.normalizeText(output)).equal(this.normalizeText(`2
+    validate(sandbox) {
+        chai.expect(this.normalizeText(sandbox.getOutput())).equal(this.normalizeText(`2
 4`));
     }
 }

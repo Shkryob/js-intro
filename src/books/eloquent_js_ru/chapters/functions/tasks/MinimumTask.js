@@ -7,8 +7,8 @@ export default class MinimumTask extends BaseTask {
         super('Минимум', 'minimum', description);
     }
 
-    validate(output) {
-        chai.expect(this.normalizeText(output)).equal(this.normalizeText(`0
+    validate(sandbox) {
+        chai.expect(this.normalizeText(sandbox.getOutput())).equal(this.normalizeText(`0
 -10`));
     }
 }

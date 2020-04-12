@@ -17,15 +17,14 @@
     import 'zone.js/lib/zone-spec/async-test';
     import store from "../store";
     import LogDisplay from "./LogDisplay";
+    import Sandbox from "../sandbox";
 
     export default {
         name: 'Main',
 
         data: function () {
             return {
-                testZone: null,
                 logs: [],
-                originalConsoleLog: null,
                 testCode: '',
                 theory: '',
 
@@ -38,9 +37,7 @@
                 tasks: [],
                 task: null,
 
-                output: '',
-
-                running: false,
+                sandbox: null,
             };
         },
 
@@ -52,25 +49,19 @@
 
         methods: {
             run(callback) {
-                if (this.running) {
-                    return;
-                }
                 this.output = '';
                 this.logs = [];
-                this.running = true;
-                const func = new Function(this.testCode);
 
-                const zoneSpec = new window.Zone['AsyncTestZoneSpec'](this.getSuccessCallback(callback),
-                    this.getFailCallback());
-                this.testZone = new window.Zone(window.Zone.current, zoneSpec);
-                this.testZone.runGuarded(func);
+                if (this.sandbox) {
+                    this.sandbox.destructor();
+                }
+                this.sandbox = new Sandbox(this.testCode);
+                this.sandbox.run(this.getSuccessCallback(callback), this.getFailCallback(), this.getLogCallback())
             },
 
             getSuccessCallback(callback) {
                 return () => {
-                    const wasRunning = this.running; //callback always fire twice :(
-                    this.running = false;
-                    if (callback && wasRunning) {
+                    if (this.sandbox.isRunning() && typeof callback === 'function') { //callback always fire twice :(
                         callback();
                     }
                 };
@@ -78,7 +69,6 @@
 
             getFailCallback() {
                 return (error) => {
-                    this.running = false;
                     this.displayError(error);
                 };
             },
@@ -139,7 +129,7 @@
             test() {
                 this.run(() => {
                     try {
-                        this.task.validate(this.output);
+                        this.task.validate(this.sandbox);
                         this.displaySuccessMessage(this.$t('Tests passed'));
                         store.markDone(this.book, this.chapter, this.task);
                     } catch (e) {
@@ -156,15 +146,9 @@
                 this.logs.push({type: 'success', message, color: 'green'});
             },
 
-            monkeyPatchConsole() {
-                this.originalConsoleLog = console.log;
-                console.log = (message, ...optionalParams) => { //Monkey patch console log
-                    if (window.Zone.current === this.testZone) {
-                        this.logs.push({type: 'log', message});
-                        this.output += message + '\n';
-                    } else {
-                        this.originalConsoleLog(message, ...optionalParams);
-                    }
+            getLogCallback() {
+                return (message) => {
+                    this.logs.push({type: 'log', message});
                 };
             },
 
@@ -175,14 +159,13 @@
         },
 
         mounted() {
-            this.monkeyPatchConsole();
             this.subscribeToGlobalEvents();
             this.loadBook();
         },
 
         destroyed() {
-            if (this.originalConsoleLog) {
-                console.log = this.originalConsoleLog;
+            if (this.sandbox) {
+                this.sandbox.destructor();
             }
 
             store.offRunCode(this.run);

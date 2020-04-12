@@ -7,8 +7,8 @@ export default class RecursionTask extends BaseTask {
         super('Рекурсия', 'recursion', description);
     }
 
-    validate(output) {
-        chai.expect(this.normalizeText(output)).equal(this.normalizeText(`true
+    validate(sandbox) {
+        chai.expect(this.normalizeText(sandbox.getOutput())).equal(this.normalizeText(`true
 false
 false`));
     }
