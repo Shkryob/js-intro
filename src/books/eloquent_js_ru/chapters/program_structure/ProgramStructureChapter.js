@@ -6,7 +6,7 @@ import ChessDeskTask from "./tasks/ChessDeskTask";
 
 class ProgramStructureChapter extends BaseChapter {
     constructor() {
-        super('Структура Программы', theory, [
+        super('Структура Программы', 'program-structure', theory, [
             new TriangleTask(),
             new FizzBuzzTask(),
             new ChessDeskTask(),

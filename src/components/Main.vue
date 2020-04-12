@@ -90,24 +90,56 @@
             },
 
             loadBook() {
-                this.book = this.books[0];
-                this.chapters = this.book.getChapters();
-
-                this.loadChapter();
+                this.book = this.findOrFirst(this.books, 'book');
+                if (this.book) {
+                    this.chapters = this.book.getChapters();
+                    this.loadChapter();
+                }
             },
 
             loadChapter() {
-                const chapter = this.chapters[0];
-                this.theory = chapter.getTheory();
-                this.tasks = chapter.getTasks();
-
-                this.loadTask();
+                this.chapter = this.findOrFirst(this.chapters, 'chapter');
+                if (this.chapter) {
+                    this.theory = this.chapter.getTheory();
+                    this.tasks = this.chapter.getTasks();
+                    this.loadTask();
+                }
             },
 
             loadTask() {
-                this.task = this.tasks[0];
-                this.theory = this.task.getDescription();
-                this.testCode = this.task.getStartCode();
+                if (this.$route.params.task) {
+                    this.task = this.tasks.find((task) => {
+                        return task.getSlug() === this.$route.params.task;
+                    });
+
+                    if (this.task) {
+                        this.theory = this.task.getDescription();
+                        const savedCode = store.restoreCode(this.book, this.chapter, this.task);
+                        if (savedCode) {
+                            this.testCode = savedCode;
+                        } else {
+                            this.testCode = this.task.getStartCode();
+                        }
+                    }
+                } else if (this.chapter) {
+                    this.theory = this.chapter.getTheory();
+                }
+            },
+
+            findOrFirst(list, routeKey) {
+                let selected;
+
+                if (this.$route.params[routeKey]) {
+                    selected = list.find((item) => {
+                        return item.getSlug() === this.$route.params[routeKey];
+                    });
+                }
+
+                if (!selected && list.length > 0) {
+                    selected = list[0];
+                }
+
+                return selected;
             },
 
             test() {
@@ -115,6 +147,7 @@
                     try {
                         this.task.validate(this.output);
                         this.displaySuccessMessage('Tests passed');
+                        store.markDone(this.book, this.chapter, this.task);
                     } catch (e) {
                         this.displayError(e);
                     }
@@ -160,6 +193,16 @@
 
             store.offRunCode(this.run);
             store.offTestCode(this.test);
+        },
+
+        watch: {
+            $route() {
+                this.loadBook();
+            },
+
+            testCode(newCode) {
+                store.saveCode(this.book, this.chapter, this.task, newCode)
+            },
         },
     }
 </script>

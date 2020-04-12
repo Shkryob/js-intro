@@ -4,7 +4,7 @@ import chai from 'chai';
 
 export default class TriangleTask extends BaseTask {
     constructor() {
-        super('Треугольник в цикле', description, `//Write your code here`);
+        super('Треугольник в цикле', 'triangle', description);
     }
 
     validate(output) {

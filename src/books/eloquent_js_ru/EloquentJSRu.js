@@ -4,7 +4,7 @@ import FunctionsChapter from "./chapters/functions/FunctionsChapter";
 
 export default class EloquentJSRu extends BaseBook {
     constructor() {
-        super('Выразительный JavaScript', 'eloquent_js_ru', 'ru', [
+        super('Выразительный JavaScript', 'eloquent-js-ru', 'ru', [
             new ProgramStructureChapter,
             new FunctionsChapter,
         ]);

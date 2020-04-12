@@ -10,8 +10,8 @@
       <v-toolbar-title>JS Intro</v-toolbar-title>
       <v-row>
         <v-spacer />
-        <v-btn color="error" outlined @click="run()">Run</v-btn>
-        <v-btn color="error" outlined class="ml-2" @click="test()">Test</v-btn>
+        <v-btn color="primary" outlined @click="run()">Run</v-btn>
+        <v-btn color="primary" outlined class="ml-2" @click="test()">Test</v-btn>
       </v-row>
 
     </v-app-bar>
@@ -23,15 +23,19 @@
     </v-content>
 
     <v-footer app>
-      <span>
-        Content is taken from the book <a href="https://eloquentjavascript.net/" target="_blank">Eloquent JavaScript</a>
-        and it's <a href="https://eloquent-javascript.karmazzin.ru/" target="_blank">russian translation</a>
-      </span>
+      <span v-html="$t('credits')"></span>
+      <v-spacer />
+      <LocaleChanger></LocaleChanger>
+
+      <v-btn class="ma-2" text icon href="https://github.com/Shkryob/js-intro" target="_blank">
+        <v-icon dark>mdi-github</v-icon>
+      </v-btn>
     </v-footer>
   </v-app>
 </template>
 
 <script>
+import LocaleChanger from "./components/LocaleChanger";
 import Menu from './components/Menu';
 import store from "./store";
 
@@ -40,6 +44,7 @@ export default {
 
   components: {
     Menu,
+    LocaleChanger,
   },
 
   data: () => ({

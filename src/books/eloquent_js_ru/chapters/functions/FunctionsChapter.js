@@ -3,7 +3,7 @@ import BaseChapter from "../../../BaseChapter";
 
 class FunctionsChapter extends BaseChapter {
     constructor() {
-        super('Функции', theory, [
+        super('Функции', 'functions', theory, [
 
         ]);
     }

@@ -1,12 +1,17 @@
 export default class BaseTask {
-    constructor(title, description, startCode) {
+    constructor(title, slug, description, startCode) {
         this.title = title;
+        this.slug = slug;
         this.description = description;
-        this.startCode = startCode;
+        this.startCode = startCode ?? `//Write your code here`;
     }
 
     getTitle() {
         return this.title;
+    }
+
+    getSlug() {
+        return this.slug;
     }
 
     getDescription() {
