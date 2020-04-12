@@ -34,9 +34,6 @@
                 return md.render(this.mdText);
             },
         },
-
-        created() {
-        }
     }
 </script>
 

@@ -1,4 +1,8 @@
 {
   "Theory": "Теория",
-  "credits": "Теория и примеры кода взяты из книги <a href=\"https://eloquentjavascript.net/\" target=\"_blank\">Eloquent JavaScript</a> и <a href=\"https://eloquent-javascript.karmazzin.ru/\" target=\"_blank\">русского перевода</a>"
+  "credits": "Теория и примеры кода взяты из книги <a href=\"https://eloquentjavascript.net/\" target=\"_blank\">Eloquent JavaScript</a> и <a href=\"https://eloquent-javascript.karmazzin.ru/\" target=\"_blank\">русского перевода</a>",
+
+  "Tests passed": "Тесты пройдены",
+
+  "Incorrect output": "Неправильный вывод"
 }

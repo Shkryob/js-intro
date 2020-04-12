@@ -73,7 +73,7 @@
         }
 
         .v-list-item {
-            padding-left: 30px;
+            padding-left: 25px;
         }
 
         .v-list-group .v-list-group__header {

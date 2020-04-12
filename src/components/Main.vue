@@ -6,15 +6,7 @@
         <v-col sm="4" fill-height>
             <Editor v-model="testCode"></Editor>
         </v-col>
-        <v-col sm="4" class="pa-1">
-            <v-alert v-for="(message, index) in messages"
-                     :key="index"
-                     :color="message.color"
-                     outlined
-                     dense>
-                {{message.message}}
-            </v-alert>
-        </v-col>
+        <LogDisplay :logs="logs"></LogDisplay>
     </v-row>
 </template>
 
@@ -24,6 +16,7 @@
     import 'zone.js';
     import 'zone.js/lib/zone-spec/async-test';
     import store from "../store";
+    import LogDisplay from "./LogDisplay";
 
     export default {
         name: 'Main',
@@ -31,7 +24,7 @@
         data: function () {
             return {
                 testZone: null,
-                messages: [],
+                logs: [],
                 originalConsoleLog: null,
                 testCode: '',
                 theory: '',
@@ -52,6 +45,7 @@
         },
 
         components: {
+            LogDisplay,
             MDViewer,
             Editor,
         },
@@ -62,7 +56,7 @@
                     return;
                 }
                 this.output = '';
-                this.messages = [];
+                this.logs = [];
                 this.running = true;
                 const func = new Function(this.testCode);
 
@@ -146,7 +140,7 @@
                 this.run(() => {
                     try {
                         this.task.validate(this.output);
-                        this.displaySuccessMessage('Tests passed');
+                        this.displaySuccessMessage(this.$t('Tests passed'));
                         store.markDone(this.book, this.chapter, this.task);
                     } catch (e) {
                         this.displayError(e);
@@ -155,18 +149,18 @@
             },
 
             displayError(error) {
-                this.messages.push({type: 'error', message: error, color: 'red'});
+                this.logs.push({type: 'error', message: error, color: 'red'});
             },
 
             displaySuccessMessage(message) {
-                this.messages.push({type: 'success', message, color: 'green'});
+                this.logs.push({type: 'success', message, color: 'green'});
             },
 
             monkeyPatchConsole() {
                 this.originalConsoleLog = console.log;
                 console.log = (message, ...optionalParams) => { //Monkey patch console log
                     if (window.Zone.current === this.testZone) {
-                        this.messages.push({type: 'log', message});
+                        this.logs.push({type: 'log', message});
                         this.output += message + '\n';
                     } else {
                         this.originalConsoleLog(message, ...optionalParams);

@@ -25,4 +25,10 @@ export default class BaseTask {
     validate(output) {
         return !!output;
     }
+
+    normalizeText(text) {
+        return text.replace(/\r?\n|\r/g, '\n')
+            .replace('\\n', '\n')
+            .replace(/(\n)+$/g, '');
+    }
 }
