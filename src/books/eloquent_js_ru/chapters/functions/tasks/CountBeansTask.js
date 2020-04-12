@@ -8,7 +8,12 @@ export default class CountBeansTask extends BaseTask {
     }
 
     validate(sandbox) {
-        chai.expect(this.normalizeText(sandbox.getOutput())).equal(this.normalizeText(`2
-4`));
+        const exposed = (sandbox.run(null, null, null, ['countBs', ['countChar']]));
+
+        chai.expect(exposed['countBs']).to.be.a('function');
+        chai.expect(exposed['countChar']).to.be.a('function');
+
+        chai.expect(exposed['countBs']('BBC')).equal(2);
+        chai.expect(exposed['countChar']('kakkerlak', 'k')).equal(4);
     }
 }

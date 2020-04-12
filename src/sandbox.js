@@ -6,7 +6,7 @@ export default class Sandbox {
         this.output = '';
     }
 
-    run(successCallback, failCallback, logCallback) {
+    run(successCallback, failCallback, logCallback, expose) {
         if (this.running) {
             return;
         }
@@ -14,26 +14,34 @@ export default class Sandbox {
         this.logCallback = logCallback;
         this.output = '';
         this.running = true;
-        const func = new Function(this.code);
+        const func = new Function(this.code + this.generateReturnStatement(expose));
 
         const zoneSpec = new window.Zone['AsyncTestZoneSpec'](() => {
-            if (typeof successCallback === 'function') {
-                successCallback();
-            }
-
+            const wasRunning = this.running; //callback always fire twice :(
             this.running = false;
             this.returnOriginalConsole();
+
+            if (wasRunning && typeof successCallback === 'function') {
+                successCallback();
+            }
         }, (error) => {
+            this.running = false;
+            this.returnOriginalConsole();
+
             if (typeof failCallback === 'function') {
                 failCallback(error)
             }
-
-            this.running = false;
-            this.returnOriginalConsole();
         });
         this.testZone = new window.Zone(window.Zone.current, zoneSpec);
         this.monkeyPatchConsole();
-        this.testZone.runGuarded(func);
+        return this.testZone.runGuarded(func);
+    }
+
+    generateReturnStatement(expose) {
+        if (!Array.isArray(expose)) {
+            return;
+        }
+        return ';\n return { ' + expose.join(', ') + ' }; ';
     }
 
     isRunning() {

@@ -61,7 +61,7 @@
 
             getSuccessCallback(callback) {
                 return () => {
-                    if (this.sandbox.isRunning() && typeof callback === 'function') { //callback always fire twice :(
+                    if (typeof callback === 'function') {
                         callback();
                     }
                 };

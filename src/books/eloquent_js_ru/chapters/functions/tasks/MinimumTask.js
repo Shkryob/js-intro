@@ -8,7 +8,10 @@ export default class MinimumTask extends BaseTask {
     }
 
     validate(sandbox) {
-        chai.expect(this.normalizeText(sandbox.getOutput())).equal(this.normalizeText(`0
--10`));
+        const exposed = (sandbox.run(null, null, null, ['min']));
+
+        chai.expect(exposed['min']).to.be.a('function');
+        chai.expect(exposed['min'](0, 10)).equal(0);
+        chai.expect(exposed['min'](0, -10)).equal(-10);
     }
 }
