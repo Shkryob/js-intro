@@ -4,7 +4,7 @@ import TriangleTask from "./tasks/TriangleTask";
 import FizzBuzzTask from "./tasks/FizzBuzzTask";
 import ChessDeskTask from "./tasks/ChessDeskTask";
 
-class ProgramStructureChapter extends BaseChapter {
+export default class ProgramStructureChapter extends BaseChapter {
     constructor() {
         super('Структура Программы', 'program-structure', theory, [
             new TriangleTask(),
@@ -13,5 +13,3 @@ class ProgramStructureChapter extends BaseChapter {
         ]);
     }
 }
-
-export default ProgramStructureChapter;

@@ -41,7 +41,11 @@ export default class Sandbox {
         if (!Array.isArray(expose)) {
             return;
         }
-        return ';\n return { ' + expose.join(', ') + ' }; ';
+
+        return ';\n return { ' + expose.map((name) => {
+                return "'" + name + "': (typeof " + name + " !== 'undefined') ? " + name + " : null"
+            })
+            .join(', ') + ' }; ';
     }
 
     isRunning() {

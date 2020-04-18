@@ -15,6 +15,7 @@
 
 <script>
     import Diff from './Diff';
+    import ValidationException from "../exceptions/ValidationException";
 
     export default {
         name: 'LogDisplay',
@@ -23,9 +24,8 @@
 
         methods: {
             formatMessage(log) {
-                if (log.message.name === 'AssertionError' && log.message.showDiff) {
-                    const message = this.$t('Incorrect output');
-                    return message;
+                if (log.message instanceof ValidationException) {
+                    return this.$t(log.message.getMessage(), log.message.getMessageArgs());
                 } else {
                     return log.message;
                 }

@@ -4,5 +4,7 @@
 
   "Tests passed": "Тесты пройдены",
 
-  "Incorrect output": "Неправильный вывод"
+  "Incorrect console output": "Неправильный вывод в консоль",
+  "Function call {funcName}({args}) returned {actual}, expected output {expected}": "Вызов функции {funcName}({args}) вернул {actual}, ожидается {expected}",
+  "{funcName} does not exist or not a function": "{funcName} не существует или не функция"
 }

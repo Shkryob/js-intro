@@ -1,18 +1,25 @@
 import BaseTask from '../../../../BaseTask';
 import description from './recursion_task.md';
-import chai from 'chai';
 
 export default class RecursionTask extends BaseTask {
     constructor() {
-        super('Рекурсия', 'recursion', description);
+        super('Рекурсия', 'recursion', description, `// Your code here.
+
+console.log(isEven(50));
+// → true
+console.log(isEven(75));
+// → false
+console.log(isEven(-1));
+// → ??`);
     }
 
     validate(sandbox) {
-        const exposed = (sandbox.run(null, null, null, ['isEven']));
+        this.exposed = (sandbox.run(null, null, null, ['isEven']));
 
-        chai.expect(exposed['isEven']).to.be.a('function');
-        chai.expect(exposed['isEven'](50)).equal(true);
-        chai.expect(exposed['isEven'](75)).equal(false);
-        chai.expect(exposed['isEven'](-1)).equal(false);
+        this.expectFunction('isEven');
+
+        this.expectFunctionOutput('isEven', [50], true);
+        this.expectFunctionOutput('isEven', [75], false);
+        this.expectFunctionOutput('isEven', [-1], false);
     }
 }

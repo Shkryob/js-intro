@@ -1,6 +1,5 @@
 import BaseTask from '../../../../BaseTask';
 import description from './triangle_task.md';
-import chai from 'chai';
 
 export default class TriangleTask extends BaseTask {
     constructor() {
@@ -8,13 +7,13 @@ export default class TriangleTask extends BaseTask {
     }
 
     validate(sandbox) {
-        chai.expect(this.normalizeText(sandbox.getOutput())).equal(this.normalizeText(`#
+        this.expectOutput(sandbox.getOutput(), `#
 ##
 ###
 ####
 #####
 ######
 #######
-`));
+`);
     }
 }

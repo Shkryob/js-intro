@@ -4,7 +4,7 @@ import MinimumTask from "./tasks/MinimumTask";
 import RecursionTask from "./tasks/RecursionTask";
 import CountBeansTask from "./tasks/CountBeansTask";
 
-class FunctionsChapter extends BaseChapter {
+export default class FunctionsChapter extends BaseChapter {
     constructor() {
         super('Функции', 'functions', theory, [
             new MinimumTask(),
@@ -13,5 +13,3 @@ class FunctionsChapter extends BaseChapter {
         ]);
     }
 }
-
-export default FunctionsChapter;

@@ -1,19 +1,23 @@
 import BaseTask from '../../../../BaseTask';
 import description from './count_beans_task.md';
-import chai from 'chai';
 
 export default class CountBeansTask extends BaseTask {
     constructor() {
-        super('Считаем бобы', 'count-beans', description);
+        super('Считаем бобы', 'count-beans', description, `// Your code here.
+
+console.log(countBs("BBC"));
+// → 2
+console.log(countChar("kakkerlak", "k"));
+// → 4`);
     }
 
     validate(sandbox) {
-        const exposed = (sandbox.run(null, null, null, ['countBs', ['countChar']]));
+        this.exposed = (sandbox.run(null, null, null, ['countBs', 'countChar']));
 
-        chai.expect(exposed['countBs']).to.be.a('function');
-        chai.expect(exposed['countChar']).to.be.a('function');
+        this.expectFunction('countBs');
+        this.expectFunction('countChar');
 
-        chai.expect(exposed['countBs']('BBC')).equal(2);
-        chai.expect(exposed['countChar']('kakkerlak', 'k')).equal(4);
+        this.expectFunctionOutput('countBs', ['BBC'], 2);
+        this.expectFunction('countChar', ['kakkerlak', 'k'], 4);
     }
 }
